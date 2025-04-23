@@ -42,9 +42,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go_version: ['1.18', '1.17', '>=1.18']
         os: ['ubuntu-latest']
     steps:
     - uses: actions/checkout@v4
     - name: Build
       run: go build -v main.go
+
+  docker:
+    needs: build
+    uses: ./.github/workflows/Docker.yml
