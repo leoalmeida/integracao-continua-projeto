@@ -13,6 +13,12 @@ jobs:
       matrix:
         go_version: ['1.18', '1.17', '>=1.18']
         os: ['ubuntu-latest']
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: root
     steps:
     - uses: actions/checkout@v3
 
@@ -28,7 +34,7 @@ jobs:
       run: docker compose up -d
 
     - name: Test
-      run: docker compose exec app go test -v main_test.go 
+      run: go test -v main_test.go 
       
   
   build:
