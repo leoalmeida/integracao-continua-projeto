@@ -19,17 +19,3 @@ services:
       - "54321:80"
     depends_on:
       - postgres
-  
-  app:
-    image: golang:1.22
-    command:
-      - go
-      - run
-      - main.go
-    volumes:
-      - ./:/app
-    working_dir: /app
-    ports:
-      - 8080:8080
-    depends_on:
-      - postgres
