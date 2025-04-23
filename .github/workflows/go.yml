@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go_version: ['1.18', '1.17', '>=1.18']
+        go_version: ['1.18']
         os: ['ubuntu-latest']
     env:
       DB_HOST: localhost
@@ -51,3 +51,4 @@ jobs:
   docker:
     needs: build
     uses: ./.github/workflows/Docker.yml
+    secrets: inherit
