@@ -26,4 +26,4 @@ jobs:
         file: ./Dockerfile
         context: .
         push: true
-        tags: leoalmeida/go_ci:1.0.0
+        tags: leoalmeida/go_ci:${{github.ref_name}}
