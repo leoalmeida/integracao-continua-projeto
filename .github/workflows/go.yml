@@ -1,43 +1,57 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
-name: Integração continua
+name: Go
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ '*' ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ '*' ]
 
 jobs:
-  ci:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        go_version: ['1.18']
+        os: ['ubuntu-latest']
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: root
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.go_version }}
+      
+    - name: Build-DB
+      run: docker compose build
+      
+    - name: Create-DB
+      run: docker compose up -d
+
+    - name: Test
+      run: go test -v main_test.go 
+      
+  
+  build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.22'
-
-    - name: Iniciar Banco
-      run: docker compose up -d postgres
-
-    - name: Lint
-      uses: golangci/golangci-lint-action@v6
-      with:
-        version: v1.59
-        args: controllers/ database/ models/ routes/
-
-    - name: Teste
-      run: DB_HOST=${{ secrets.DB_HOST }} DB_PASSWORD=${{ secrets.DB_PASSWORD }} DB_USER=${{ secrets.DB_USER }} DB_NAME=${{ secrets.DB_NAME }} DB_PORT=${{ secrets.DB_PORT }} go test -v main_test.go
-
-
     - name: Build
-      run: go build main.go
-
-    - name: Projeto compilado
-      uses: actions/upload-artifact@v4
+      run: go build -v main.go
+      
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.2
       with:
-        name: projeto_compilado
+        name: Programa
         path: main
+        
+  docker:
+    needs: build
+    uses: ./.github/workflows/Docker.yml
+    secrets: inherit
