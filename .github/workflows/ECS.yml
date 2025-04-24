@@ -16,31 +16,26 @@ jobs:
         
     - name: Descrever task definition
       run: aws ecs describe-task-definition --task-definition Tarefa_API-go --query taskDefinition > task-definition.json
-    
-    - name: Login to amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-      
-    - name: Build, tag e push da imagem para o Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: my-ecr-repo
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-      
+
     - name: Fill new image in ECS task def
       id: task-def
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
-        container-name: my-container
-        image: ${{ steps.build-image.outputs.image }}
+        container-name: Go
+        image: leoalmeida/go_ci:971502738
+        environment-variables: |
+          DB_HOST=${{secrets.DB_HOST}}
+          DB_USER=${{secrets.DB_USER}}
+          DB_PASSWORD=${{secrets.DB_PASSWORD}}
+          DB_NAME=${{secrets.DB_NAME}}
+          DB_PORT=${{secrets.DB_PORT}}
+          PORT=8000
 
     - name: Deploy Amazon ECS task def
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: my-service
-        cluster: my-cluster
+        service: Tarefa_API-go-service-onmfgr5i
+        cluster: APP_go
         wait-for-service-stability: true
