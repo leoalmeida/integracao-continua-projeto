@@ -7,12 +7,12 @@ jobs:
   ec2:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
     - name: Download a Build Artifact
       uses: actions/download-artifact@v4.2.1
       with:
         name: Programa
         path: main
+    - uses: actions/checkout@v3
     - name: ssh deploy
       uses: easingthemes/ssh-deploy@v5.1.0
       with:
@@ -20,7 +20,7 @@ jobs:
         REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
         TARGET: /home/${{ secrets.REMOTE_USER }}
-        EXCLUDE: "/node_modules/, postgres-data"
+        EXCLUDE: "postgres-data"
     - name: SSH Remote Commands
       uses: appleboy/ssh-action@v1.0.3
       with:
