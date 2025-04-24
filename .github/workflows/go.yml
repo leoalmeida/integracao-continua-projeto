@@ -4,29 +4,24 @@ on:
   push:
     branches: [ 'main' ]
   pull_request:
-    branches: [ '*' ]
+    branches: [ 'main' ]
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        go_version: ['1.18']
-        os: ['ubuntu-latest']
+    runs-on: ubuntu-latest
     env:
-      DB_HOST: localhost
+      DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: root
-      PORT: 80
     steps:
     - uses: actions/checkout@v3
 
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version: ${{ matrix.go_version }}
+        go-version: 1.18
       
     - name: Build-DB
       run: docker compose build
@@ -36,7 +31,6 @@ jobs:
 
     - name: Test
       run: go test -v main_test.go 
-      
   
   build:
     needs: test
