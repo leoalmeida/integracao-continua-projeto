@@ -19,7 +19,7 @@ jobs:
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: root
-      APP_PORT: 8080
+      PORT: 80
     steps:
     - uses: actions/checkout@v3
 
