@@ -14,7 +14,6 @@ jobs:
       uses: actions/download-artifact@v4.2.1
       with:
         name: Programa
-        path: main
     - name: Docker login
       uses: docker/login-action@v3.4.0
       with:
@@ -26,4 +25,4 @@ jobs:
         file: ./Dockerfile
         context: .
         push: true
-        tags: leoalmeida/go_ci:${{github.repository_id}}
+        tags: leoalmeida/go_ci:${{github.run_number}}
