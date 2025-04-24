@@ -20,7 +20,7 @@ jobs:
         REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
         TARGET: /home/${{ secrets.REMOTE_USER }}
-        EXCLUDE: "postgres-data"
+        EXCLUDE: "docker-compose.yml,Makefile,Dockerfile,.github,.git,postgres-data"
     - name: SSH Remote Commands
       uses: appleboy/ssh-action@master
       with:
