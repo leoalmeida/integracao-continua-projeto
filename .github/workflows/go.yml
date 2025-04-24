@@ -31,7 +31,7 @@ jobs:
       run: docker compose up -d
 
     - name: Test
-      run: docker compose exec app go test -v main_test.go 
+      run: docker compose exec go test -v main_test.go 
   
   build:
     needs: test
