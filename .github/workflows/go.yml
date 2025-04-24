@@ -2,7 +2,7 @@ name: Go
 
 on:
   push:
-    branches: [ '*' ]
+    branches: [ 'main' ]
   pull_request:
     branches: [ '*' ]
 
@@ -19,6 +19,7 @@ jobs:
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: root
+      PORT: 80
     steps:
     - uses: actions/checkout@v3
 
@@ -54,4 +55,9 @@ jobs:
   docker:
     needs: build
     uses: ./.github/workflows/Docker.yml
+    secrets: inherit
+
+  deploy_ec2:
+    needs: build
+    uses: ./.github/workflows/EC2.yml
     secrets: inherit
