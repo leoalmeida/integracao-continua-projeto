@@ -18,7 +18,7 @@ jobs:
       run: aws ecs describe-task-definition --task-definition Tarefa_API-go --query taskDefinition > task-definition.json
     
     - name: Cópia do task definition
-      run: cp task-defintion.json task-defintion.json.bkp
+      run: cp task-definition.json task-definition.json.bkp
     
     - name: Fill new image in ECS task def
       id: task-def
