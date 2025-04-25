@@ -2,7 +2,7 @@ name: Go
 
 on:
   push:
-    branches: [ 'main' ]
+    branches: [ 'main' , 'HML' ]
   pull_request:
     branches: [ 'main' ]
 
@@ -56,7 +56,14 @@ jobs:
   #  uses: ./.github/workflows/EC2.yml
   #  secrets: inherit
   
-  deploy_ecs:
+  #deploy_ecs:
+  #  needs: docker
+  #  uses: ./.github/workflows/ECS.yml
+  #  secrets: inherit
+
+  
+  loadtest:
     needs: docker
-    uses: ./.github/workflows/ECS.yml
+    if: ${{ github.ref_name == 'HML' }}
+    uses: ./.github/workflows/LoadTest.yml
     secrets: inherit
