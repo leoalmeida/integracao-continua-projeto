@@ -16,8 +16,6 @@ jobs:
         aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
         aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}  
 
-    - run: git clone https://github.com/leollo98/Infra_CI.git
-
     - name: HashiCorp - Setup Terraform
       uses: hashicorp/setup-terraform@v2.0.3
 
@@ -39,3 +37,16 @@ jobs:
       with:
         packages: |
           locust
+
+    - run: |
+        echo "from locust import HttpUser, TaskSet, task, between" >> locustfile.py
+        echo "" >> locustfile.py
+        echo "class UserTasks(TaskSet):" >> locustfile.py
+        echo "    @task(1)" >> locustfile.py
+        echo "    def index(self):" >> locustfile.py
+        echo "        self.client.get('/leo')" >> locustfile.py
+        echo "" >> locustfile.py
+        echo "class WebSiteUser(HttpUser):" >> locustfile.py
+        echo "    tasks = [UserTasks]" >> locustfile.py
+        echo "    wait_time = between(1, 5)" >> locustfile.py
+        cat locustfile.py
