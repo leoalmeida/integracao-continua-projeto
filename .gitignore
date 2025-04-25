@@ -3,4 +3,3 @@ main
 postgres-data
 .env
 *.env
-Infra_CI
