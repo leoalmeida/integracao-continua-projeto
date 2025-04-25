@@ -23,31 +23,31 @@ spec:
          ports:
           - containerPort: 8000
          env:
-           - name: HOST
+           - name: DB_HOST
              valueFrom:
               secretKeyRef:
                 name: dbhost
-                key: HOST
-           - name: DBPORT
+                key: DB_HOST
+           - name: DB_PORT
              valueFrom:
               secretKeyRef:
                 name: dbport
-                key: DBPORT
-           - name: USER
+                key: DB_PORT
+           - name: DB_USER
              valueFrom:
               secretKeyRef:
                 name: dbuser
-                key: USER
-           - name: PASSWORD
+                key: DB_USER
+           - name: DB_PASSWORD
              valueFrom:
               secretKeyRef:
                 name: dbpassword
-                key: PASSWORD
-           - name: DBNAME
+                key: DB_PASSWORD
+           - name: DB_NAME
              valueFrom:
               secretKeyRef:
                 name: dbname
-                key: DBNAME
+                key: DB_NAME
            - name: PORT
              valueFrom:
               secretKeyRef:
