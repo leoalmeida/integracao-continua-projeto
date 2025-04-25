@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-api
+  labels:
+    nome: go
+spec:
+  selector:
+    matchLabels:
+      nome: go
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        nome: go
+    spec:
+    
+      containers: 
+       - name: go
+         image: leoalmeida/go_ci:98 
+         ports:
+          - containerPort: 8000
+         env:
+           - name: DB_HOST
+             valueFrom:
+              secretKeyRef:
+                name: dbhost
+                key: DB_HOST
+           - name: DB_PORT
+             valueFrom:
+              secretKeyRef:
+                name: dbport
+                key: DB_PORT
+           - name: DB_USER
+             valueFrom:
+              secretKeyRef:
+                name: dbuser
+                key: DB_USER
+           - name: DB_PASSWORD
+             valueFrom:
+              secretKeyRef:
+                name: dbpassword
+                key: DB_PASSWORD
+           - name: DB_NAME
+             valueFrom:
+              secretKeyRef:
+                name: dbname
+                key: DB_NAME
+           - name: PORT
+             valueFrom:
+              secretKeyRef:
+                name: port
+                key: PORT
+         livenessProbe:
+           httpGet:
+             path: /leo
+             port: 8000
+           initialDelaySeconds: 60
+           periodSeconds: 5
+      restartPolicy: Always
