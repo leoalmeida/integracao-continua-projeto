@@ -62,8 +62,13 @@ jobs:
   #  secrets: inherit
 
   
-  loadtest:
-    needs: docker
-    if: ${{ github.ref_name == 'HML' }}
-    uses: ./.github/workflows/LoadTest.yml
-    secrets: inherit
+  #loadtest:
+  #  needs: docker
+  #  if: ${{ github.ref_name == 'HML' }}
+  #  uses: ./.github/workflows/LoadTest.yml
+  #  secrets: inherit
+
+  Deploy_EKS:
+     needs: docker
+     uses: ./.github/workflows/EKS.yml
+     secrets: inherit
